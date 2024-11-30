@@ -13,7 +13,7 @@ function CreateLink() {
         try {
             let time = pickedDateTime.format('HH:mm')
             let date = pickedDateTime.format('DD.MM.YYYY')
-            const response = await axios.post('http://localhost:8080/create', {date: date, time: time});
+            const response = await axios.post('http://localhost:8080/create', { date: date, time: time });
             console.log(response.data)
         } catch (error) {
             console.error('Error sending guess:', error);
@@ -23,8 +23,8 @@ function CreateLink() {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <h1>Create Link</h1>
-            <DatePicker label="coin toss reveal date" />
-            <DateTimePicker label="Basic date time picker" value={pickedDateTime} onChange={(newValue)  => setPickedDateTime(newValue)}/>
+            <DateTimePicker label="Pick a time for the results to be revealed"
+                value={pickedDateTime} onChange={(newValue) => setPickedDateTime(newValue)} />
             <Button variant="contained" disableElevation onClick={sendCreate}>Create Link</Button>
         </LocalizationProvider>
     );
