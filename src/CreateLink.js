@@ -8,13 +8,15 @@ import { useState } from 'react';
 
 function CreateLink() {
     const [pickedDateTime, setPickedDateTime] = useState(null)
+    const [link, setLink] = useState(null)
 
     const sendCreate = async (guess) => {
         try {
-            let time = pickedDateTime.format('HH:mm')
-            let date = pickedDateTime.format('DD.MM.YYYY')
+            let time = pickedDateTime.format('HH:mm:ss')
+            let date = pickedDateTime.format('YYYY-MM-DD')
             const response = await axios.post('http://localhost:8080/create', { date: date, time: time });
             console.log(response.data)
+            setLink(response.data)
         } catch (error) {
             console.error('Error sending guess:', error);
         }
@@ -26,6 +28,7 @@ function CreateLink() {
             <DateTimePicker label="Pick a time for the results to be revealed"
                 value={pickedDateTime} onChange={(newValue) => setPickedDateTime(newValue)} />
             <Button variant="contained" disableElevation onClick={sendCreate}>Create Link</Button>
+            here's the link: {link}
         </LocalizationProvider>
     );
 }
