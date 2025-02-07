@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 import Header from './components/Header';
 import CreateLink from './CreateLink';
+import ViewSession from './components/ViewSession';
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 								<p>Add your about page content here.</p>
 							</div>
 						} />
+						<Route path="/session/:token" element={<ViewSession />} />
 					</Routes>
 				</main>
 			</div>

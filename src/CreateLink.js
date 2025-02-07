@@ -10,7 +10,7 @@ import CheckIcon from '@mui/icons-material/Check';
 
 function CreateLink() {
     const [pickedDateTime, setPickedDateTime] = useState(null)
-    const [link, setLink] = useState(null)
+    const [token, setToken] = useState(null)
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [copied, setCopied] = useState(false)
 
@@ -19,16 +19,19 @@ function CreateLink() {
             let time = pickedDateTime.format('HH:mm:ss')
             let date = pickedDateTime.format('YYYY-MM-DD')
             const response = await axios.post('http://localhost:8080/create', { date: date, time: time });
-            console.log(response.data)
-            setLink(response.data)
+            setToken(response.data.token)
         } catch (error) {
             console.error('Error sending create request:', error);
         }
     };
 
+    const getLink = () => {
+        return `${window.location.origin}/session/${token}`
+    }
+
     const handleCopy = async () => {
         try {
-            await navigator.clipboard.writeText(link);
+            await navigator.clipboard.writeText(getLink());
             setOpenSnackbar(true);
             setCopied(true);
             setTimeout(() => {
@@ -69,7 +72,7 @@ function CreateLink() {
                         Create Link
                     </Button>
 
-                    {link && (
+                    {token && (
                         <Box sx={{ textAlign: 'center', mt: 2 }}>
                             <Typography variant="subtitle1" gutterBottom>
                                 Here's your link:
@@ -93,7 +96,7 @@ function CreateLink() {
                                         flex: 1
                                     }}
                                 >
-                                    {link}
+                                    {getLink()}
                                 </Typography>
                                 <IconButton size="small">
                                     {copied ? (
