@@ -13,8 +13,14 @@ function CreateLink() {
     const [token, setToken] = useState(null)
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [copied, setCopied] = useState(false)
+    const [dateError, setDateError] = useState(false)
 
     const sendCreate = async () => {
+        if (!pickedDateTime) {
+            setDateError(true);
+            return;
+        }
+        
         try {
             let time = pickedDateTime.format('HH:mm:ss')
             let date = pickedDateTime.format('YYYY-MM-DD')
@@ -44,7 +50,7 @@ function CreateLink() {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Container maxWidth="sm">
+            <Container maxWidth="md">
                 <Box sx={{ 
                     display: 'flex', 
                     flexDirection: 'column', 
@@ -56,21 +62,33 @@ function CreateLink() {
                         Create Link
                     </Typography>
                     
-                    <DateTimePicker 
-                        label="Pick a time for the results to be revealed"
-                        value={pickedDateTime} 
-                        onChange={(newValue) => setPickedDateTime(newValue)}
-                        sx={{ width: '100%' }}
-                    />
-                    
-                    <Button 
-                        variant="contained" 
-                        size="large"
-                        onClick={sendCreate}
-                        sx={{ minWidth: 200 }}
-                    >
-                        Create Link
-                    </Button>
+                    <Box sx={{ 
+                        display: 'flex', 
+                        width: '100%',
+                        gap: 2,
+                        alignItems: 'center'
+                    }}>
+                        <DateTimePicker 
+                            label="Pick a time for the results to be revealed"
+                            value={pickedDateTime} 
+                            onChange={(newValue) => {
+                                setPickedDateTime(newValue);
+                                setDateError(false);
+                            }}
+                            sx={{ flex: 1 }}
+                            error={dateError}
+                            helperText={dateError ? "Please select a date and time" : null}
+                        />
+                        
+                        <Button 
+                            variant="contained" 
+                            size="large"
+                            onClick={sendCreate}
+                            sx={{ height: 56 }}  // Match DateTimePicker height
+                        >
+                            Create Link
+                        </Button>
+                    </Box>
 
                     {token && (
                         <Box sx={{ textAlign: 'center', mt: 2 }}>
@@ -85,7 +103,8 @@ function CreateLink() {
                                     bgcolor: 'grey.100',
                                     p: 2,
                                     borderRadius: 1,
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    width: '100%'
                                 }}
                                 onClick={handleCopy}
                             >

@@ -20,13 +20,6 @@ function Header() {
                 <Box>
                     <Button 
                         component={Link} 
-                        to="/create" 
-                        color="inherit"
-                    >
-                        Create
-                    </Button>
-                    <Button 
-                        component={Link} 
                         to="/about" 
                         color="inherit"
                     >
