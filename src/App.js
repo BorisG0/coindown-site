@@ -1,14 +1,27 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+import Header from './components/Header';
 import CreateLink from './CreateLink';
 
 function App() {
 	return (
-		<>
-			<h1>Coindown!!!</h1>
-			set this shit up
-
-			<CreateLink/>
-		</>
+		<Router>
+			<div className="app">
+				<Header />
+				<main className="main-content">
+					<Routes>
+						<Route path="/" element={<Navigate to="/create" replace />} />
+						<Route path="/create" element={<CreateLink />} />
+						<Route path="/about" element={
+							<div>
+								<h2>About Coindown</h2>
+								<p>Add your about page content here.</p>
+							</div>
+						} />
+					</Routes>
+				</main>
+			</div>
+		</Router>
 	);
 }
 
