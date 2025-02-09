@@ -3,7 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import CreateLink from './CreateLink';
 import ViewSession from './components/ViewSession';
-
+import About from './About';
 function App() {
 	return (
 		<Router>
@@ -13,12 +13,7 @@ function App() {
 					<Routes>
 						<Route path="/" element={<Navigate to="/create" replace />} />
 						<Route path="/create" element={<CreateLink />} />
-						<Route path="/about" element={
-							<div>
-								<h2>About Coindown</h2>
-								<p>Add your about page content here.</p>
-							</div>
-						} />
+						<Route path="/about" element={<About />} />
 						<Route path="/session/:token" element={<ViewSession />} />
 					</Routes>
 				</main>
