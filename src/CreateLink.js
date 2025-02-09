@@ -20,9 +20,9 @@ function CreateLink() {
         }
 
         try {
-            let time = pickedDateTime.format('HH:mm:ss')
-            let date = pickedDateTime.format('YYYY-MM-DD')
-            const response = await axios.post('http://localhost:8080/create', { date: date, time: time });
+            // Convert to Unix timestamp (seconds)
+            const timestamp = Math.floor(pickedDateTime.unix())
+            const response = await axios.post('http://localhost:8080/create', { timestamp: timestamp });
             setToken(response.data.token)
         } catch (error) {
             console.error('Error sending create request:', error);

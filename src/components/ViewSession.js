@@ -38,19 +38,19 @@ function ViewSession() {
         return <div>Error: {error}</div>;
     }
 
-    const hasTimeElapsed = new Date(session?.datetime) <= new Date();
+    const hasTimeElapsed = session?.timestamp * 1000 <= Date.now();
 
     return (
         <div className="view-session">
             <h2>Session Details</h2>
             {session && (
                 <div>
-                    <p>Scheduled Time: {session.datetime}</p>
+                    <p>Scheduled Time: {new Date(session.timestamp * 1000).toLocaleString()}</p>
                     {hasTimeElapsed ? (
                         <p>Time has passed</p>
                     ) : (
                         <FlipClockCountdown
-                            to={new Date(session.datetime).getTime()}
+                            to={session.timestamp * 1000}
                             labels={['DAYS', 'HOURS', 'MINUTES', 'SECONDS']}
                             labelStyle={{ fontSize: 10 }}
                         />
