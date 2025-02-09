@@ -1,7 +1,7 @@
 import { Box, Button, Typography, Container } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { StaticDateTimePicker } from '@mui/x-date-pickers/StaticDateTimePicker';
 import axios from 'axios';
 import { useState } from 'react';
 import { Snackbar, IconButton } from '@mui/material';
@@ -13,14 +13,12 @@ function CreateLink() {
     const [token, setToken] = useState(null)
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [copied, setCopied] = useState(false)
-    const [dateError, setDateError] = useState(false)
 
     const sendCreate = async () => {
         if (!pickedDateTime) {
-            setDateError(true);
             return;
         }
-        
+
         try {
             let time = pickedDateTime.format('HH:mm:ss')
             let date = pickedDateTime.format('YYYY-MM-DD')
@@ -51,52 +49,41 @@ function CreateLink() {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Container maxWidth="md">
-                <Box sx={{ 
-                    display: 'flex', 
-                    flexDirection: 'column', 
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     gap: 3,
                     mt: 4
                 }}>
-                    <Typography variant="h4" component="h1" gutterBottom>
+
+                    <StaticDateTimePicker
+                        value={pickedDateTime}
+                        disablePast={true}
+                        onChange={(newValue) => {
+                            setPickedDateTime(newValue);
+                        }}
+                        slots={{
+                            actionBar: () => null
+                        }}
+                    />
+
+                    <Button
+                        variant="contained"
+                        size="large"
+                        onClick={sendCreate}
+                    >
                         Create Link
-                    </Typography>
-                    
-                    <Box sx={{ 
-                        display: 'flex', 
-                        width: '100%',
-                        gap: 2,
-                        alignItems: 'center'
-                    }}>
-                        <DateTimePicker 
-                            label="Pick a time for the results to be revealed"
-                            value={pickedDateTime} 
-                            onChange={(newValue) => {
-                                setPickedDateTime(newValue);
-                                setDateError(false);
-                            }}
-                            sx={{ flex: 1 }}
-                            error={dateError}
-                            helperText={dateError ? "Please select a date and time" : null}
-                        />
-                        
-                        <Button 
-                            variant="contained" 
-                            size="large"
-                            onClick={sendCreate}
-                            sx={{ height: 56 }}  // Match DateTimePicker height
-                        >
-                            Create Link
-                        </Button>
-                    </Box>
+                    </Button>
+
 
                     {token && (
                         <Box sx={{ textAlign: 'center', mt: 2 }}>
                             <Typography variant="subtitle1" gutterBottom>
                                 Here's your link:
                             </Typography>
-                            <Box 
-                                sx={{ 
+                            <Box
+                                sx={{
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: 1,
@@ -108,9 +95,9 @@ function CreateLink() {
                                 }}
                                 onClick={handleCopy}
                             >
-                                <Typography 
+                                <Typography
                                     variant="body1"
-                                    sx={{ 
+                                    sx={{
                                         wordBreak: 'break-all',
                                         flex: 1
                                     }}
