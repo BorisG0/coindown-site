@@ -15,7 +15,7 @@ function ViewSession() {
 
     const fetchSession = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/session/${token}`);
+            const response = await fetch(process.env.REACT_APP_SERVER_URL + `/session/${token}`);
             if (!response.ok) {
                 throw new Error('Session not found');
             }
@@ -70,7 +70,7 @@ function ViewSession() {
                     {session.coin_result && (
                         <>
                             <p>Coin Result: {session.coin_result}</p>
-                            {session.coin_result == 'heads' ? (
+                            {session.coin_result === 'heads' ? (
                                 <img src={headsImage} alt="Heads" />
                             ) : (
                                 <img src={tailsImage} alt="Tails" />

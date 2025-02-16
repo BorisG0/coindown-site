@@ -22,7 +22,7 @@ function CreateLink() {
         try {
             // Convert to Unix timestamp (seconds)
             const timestamp = Math.floor(pickedDateTime.unix())
-            const response = await axios.post('http://localhost:8080/create', { timestamp: timestamp });
+            const response = await axios.post(process.env.REACT_APP_SERVER_URL + '/create', { timestamp: timestamp });
             setToken(response.data.token)
         } catch (error) {
             console.error('Error sending create request:', error);
