@@ -10,27 +10,29 @@ function ViewSession() {
     const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const shareableLink = `${window.location.origin}/session/${token}`;
+    const hasTimeElapsed = session?.timestamp * 1000 <= Date.now();
+
+    const fetchSession = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/session/${token}`);
+            if (!response.ok) {
+                throw new Error('Session not found');
+            }
+            const data = await response.json();
+            setSession(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchSession = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/session/${token}`);
-                if (!response.ok) {
-                    throw new Error('Session not found');
-                }
-                const data = await response.json();
-                setSession(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchSession();
     }, [token]);
 
-    const shareableLink = `${window.location.origin}/session/${token}`;
+    
 
     if (loading) {
         return <div>Loading...</div>;
@@ -40,7 +42,7 @@ function ViewSession() {
         return <div>Error: {error}</div>;
     }
 
-    const hasTimeElapsed = session?.timestamp * 1000 <= Date.now();
+    
 
     return (
         <div className="view-session">
@@ -49,12 +51,20 @@ function ViewSession() {
                 <div>
                     <p>Scheduled Time: {new Date(session.timestamp * 1000).toLocaleString()}</p>
                     {hasTimeElapsed ? (
-                        <p>Time has passed</p>
+                        <>
+                            <p>Time has passed</p>
+                            {!session.coin_result && (
+                                <button onClick={fetchSession}>
+                                    Check Result
+                                </button>
+                            )}
+                        </>
                     ) : (
                         <FlipClockCountdown
                             to={session.timestamp * 1000}
                             labels={['DAYS', 'HOURS', 'MINUTES', 'SECONDS']}
                             labelStyle={{ fontSize: 10 }}
+                            onComplete={fetchSession}
                         />
                     )}
                     {session.coin_result && (
