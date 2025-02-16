@@ -2,6 +2,8 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
+import headsImage from '../assets/heads.jpg';
+import tailsImage from '../assets/tails.jpg';
 
 function ViewSession() {
     const { token } = useParams();
@@ -56,7 +58,14 @@ function ViewSession() {
                         />
                     )}
                     {session.coin_result && (
-                        <p>Coin Result: {session.coin_result}</p>
+                        <>
+                            <p>Coin Result: {session.coin_result}</p>
+                            {session.coin_result == 'heads' ? (
+                                <img src={headsImage} alt="Heads" />
+                            ) : (
+                                <img src={tailsImage} alt="Tails" />
+                            )}
+                        </>
                     )}
                     <p>Share this link: <a href={shareableLink}>{shareableLink}</a></p>
                 </div>
