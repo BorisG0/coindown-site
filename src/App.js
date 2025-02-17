@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
-import CreateLink from './CreateLink';
+import CreateLink from './components/CreateLink';
 import ViewSession from './components/ViewSession';
-import About from './About';
+import About from './components/About';
 function App() {
 	return (
 		<Router>

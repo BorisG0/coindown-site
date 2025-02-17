@@ -4,6 +4,8 @@ import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
 import headsImage from '../assets/heads.jpg';
 import tailsImage from '../assets/tails.jpg';
+import LinkDisplay from './LinkDisplay';
+import { Container } from '@mui/material';
 
 function ViewSession() {
     const { token } = useParams();
@@ -32,7 +34,7 @@ function ViewSession() {
         fetchSession();
     }, [token]);
 
-    
+
 
     if (loading) {
         return <div>Loading...</div>;
@@ -42,10 +44,10 @@ function ViewSession() {
         return <div>Error: {error}</div>;
     }
 
-    
+
 
     return (
-        <div className="view-session">
+        <Container maxWidth="md">
             <h2>Session Details</h2>
             {session && (
                 <div>
@@ -69,7 +71,8 @@ function ViewSession() {
                     )}
                     {session.coin_result && (
                         <>
-                            <p>Coin Result: {session.coin_result}</p>
+                            <h3>Coin Result</h3>
+                            <h1>{session.coin_result.toUpperCase()}</h1>
                             {session.coin_result === 'heads' ? (
                                 <img src={headsImage} alt="Heads" />
                             ) : (
@@ -77,10 +80,10 @@ function ViewSession() {
                             )}
                         </>
                     )}
-                    <p>Share this link: <a href={shareableLink}>{shareableLink}</a></p>
+                    <LinkDisplay link={shareableLink} />
                 </div>
             )}
-        </div>
+        </Container>
     );
 }
 
